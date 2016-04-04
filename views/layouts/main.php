@@ -4,6 +4,7 @@
 /* @var $content string */
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
@@ -27,7 +28,7 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'Мини игра',
+        'brandLabel' => 'My Company',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
@@ -36,21 +37,21 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'Меню', 'url' => ['/alko/index']],
-            ['label' => 'Правила', 'url' => ['/alko/rules']],
-            ['label' => 'Новая игра', 'url' => ['/alko/game']],
-//            Yii::$app->user->isGuest ? (
-//                ['label' => 'Login', 'url' => ['/site/login']]
-//            ) : (
-//                '<li>'
-//                . Html::beginForm(['/site/logout'], 'post')
-//                . Html::submitButton(
-//                    'Logout (' . Yii::$app->user->identity->username . ')',
-//                    ['class' => 'btn btn-link']
-//                )
-//                . Html::endForm()
-//                . '</li>'
-//            )
+            ['label' => 'Books', 'url' => ['/products/index']],
+            ['label' => 'File manager', 'url' => ['/manager/menu']],
+            ['label' => 'Say', 'url' => ['/site/say']],
+            Yii::$app->user->isGuest ? (
+                ['label' => 'Login', 'url' => ['/site/login']]
+            ) : (
+                '<li>'
+                . Html::beginForm(['/site/logout'], 'post')
+                . Html::submitButton(
+                    'Logout (' . Yii::$app->user->identity->name . ')',
+                    ['class' => 'btn btn-link']
+                )
+                . Html::endForm()
+                . '</li>'
+            )
         ],
     ]);
     NavBar::end();
@@ -66,7 +67,7 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; My Game <?= date('Y') ?></p>
+        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
 
         <p class="pull-right"><?= Yii::powered() ?></p>
     </div>

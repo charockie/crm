@@ -2,6 +2,7 @@
 
 namespace app\models\manager;
 
+use yii\db\ActiveRecord;
 use Yii;
 
 /**
@@ -11,7 +12,7 @@ use Yii;
  * @property string $name
  * @property integer $population
  */
-class User extends \yii\db\ActiveRecord
+class User extends ActiveRecord
 {
     /**
      * @inheritdoc
@@ -21,6 +22,15 @@ class User extends \yii\db\ActiveRecord
         return 'users';
     }
 
+    public function rules()
+    {
+        return [
+            [['name', 'password'], 'required'],
+            [['price'], 'integer'],
+            [['name'], 'string', 'min' => 2],
+            [['password'], 'string', 'min' => 5]
+        ];
+    }
 
     /**
      * @inheritdoc
@@ -33,4 +43,5 @@ class User extends \yii\db\ActiveRecord
             'password' => 'Password_user',
         ];
     }
+
 }
