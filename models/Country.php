@@ -2,7 +2,6 @@
 
 namespace app\models\manager;
 
-use yii\db\ActiveRecord;
 use Yii;
 
 /**
@@ -12,23 +11,26 @@ use Yii;
  * @property string $name
  * @property integer $population
  */
-class User extends ActiveRecord
+class Country extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'user';
+        return 'country';
     }
 
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
-            [['name', 'password'], 'required'],
-            [['price'], 'integer'],
-            [['name'], 'string', 'min' => 2],
-            [['password'], 'string', 'min' => 5]
+            [['code', 'name'], 'required'],
+            [['population'], 'integer'],
+            [['code'], 'string', 'max' => 2],
+            [['name'], 'string', 'max' => 52]
         ];
     }
 
@@ -38,10 +40,9 @@ class User extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID_user',
-            'name' => 'Name_user',
-            'password' => 'Password_user',
+            'code' => 'Code',
+            'name' => 'Name',
+            'population' => 'Population',
         ];
     }
-
 }
