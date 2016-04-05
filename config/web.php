@@ -48,6 +48,12 @@ $config = [
         */
     ],
     'params' => $params,
+    'modules' => [
+        'administration' => [
+            'class' => 'app\modules\administration\Module',
+            // ... другие настройки модуля ...
+        ],
+    ],
 ];
 
 if (YII_ENV_DEV) {

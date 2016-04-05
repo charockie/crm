@@ -32,12 +32,6 @@ $config = [
         ],
     ],
     */
-    'modules' => [
-        'admin' => [
-            'class' => 'app\modules\admin\Module',
-            // ... другие настройки модуля ...
-        ],
-    ],
 ];
 
 if (YII_ENV_DEV) {

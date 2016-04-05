@@ -7,6 +7,8 @@ use Yii;
 class Position extends \yii\db\ActiveRecord
 {
     public $name;
+    public $user_id;
+    public $pos_id;
     /**
      * @inheritdoc
      */
@@ -18,9 +20,10 @@ class Position extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'description'], 'required'],
+            [['title', 'description', 'depart_id'], 'required'],
             [['title'], 'string', 'min' => 2],
             [['description'], 'string', 'min' => 10],
+            [['depart_id'], 'integer'],
         ];
     }
 
@@ -30,8 +33,10 @@ class Position extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'title' => 'Название',
+            'title' => 'Должность',
             'description' => 'Описание',
+            'name' => 'Работник',
+            'depart_id' => 'Отдел',
         ];
     }
 
