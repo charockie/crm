@@ -7,8 +7,8 @@ use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 
-$this->title = 'Departments';
-$this->params['breadcrumbs'][] = ['label' => 'Admin panel', 'url' => ['/administration/menu']];
+$this->title = 'Отделы';
+$this->params['breadcrumbs'][] = ['label' => 'Панель администратора', 'url' => ['/administration/menu']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 

@@ -48,7 +48,7 @@ class DepartmentsController extends Controller
     {
         if (Yii::$app->user->identity && (Yii::$app->user->identity->privilege == 1)) {
             $model = $this->findModel($id)->findOne($id);
-            $departs = Position::find()->leftJoin('user', 'user.position_id=position.id')->addSelect(["*", "user.name", "position.id pos_id", "user.id user_id"])->where("position.depart_id=$id");
+            $departs = Position::find()->leftJoin('user', 'user.position_id=position.id')->addSelect(["*", "user.name", "position.id id", "user.id user_id"])->where("position.depart_id=$id");
             $dataProvider = new ActiveDataProvider([
                 'query' => $departs,
                 'pagination' => [
@@ -77,7 +77,25 @@ class DepartmentsController extends Controller
         return $this->redirect('index.php');
     }
 
-    public function actionDelete($id)
+
+    //jquery POST/ajax
+    public function actionDelete_department()
+    {
+        if (Yii::$app->user->identity && (Yii::$app->user->identity->privilege == 1)) {
+            if(Yii::$app->request->post('id') && Departments::findOne(Yii::$app->request->post('id'))->delete()){
+
+                $ids = Position::find()->select('id')->andWhere(['depart_id' => Yii::$app->request->post('id')])->column();
+                Position::deleteAll(['id' => $ids]);
+
+                \app\models\User::updateAll(['position_id' => 0], ['position_id' => $ids]);
+                return true;
+            }
+            return $this->redirect(['index']);
+        }
+        return $this->redirect('index.php');
+    }
+
+    public function actionDelete_dep($id)
     {
         if (Yii::$app->user->identity && (Yii::$app->user->identity->privilege == 1)) {
             $this->findModel($id)->delete();
@@ -101,28 +119,40 @@ class DepartmentsController extends Controller
         return $this->redirect('index.php');
     }
 
-    public function actionChoose_user($id)
+    public function actionChoose_user($dep_id, $pos_id)
     {
         if (Yii::$app->user->identity && (Yii::$app->user->identity->privilege == 1)) {
-            $model = $this->findModel($id)->findOne($id);
-            $departs = User::find()->where("position_id = '0'");
+            $model = $this->findModel($dep_id)->findOne($dep_id);
+            $position = Position::findOne($pos_id);
+            $user = User::find()->where("position_id = '0'");
 
             $dataProvider = new ActiveDataProvider([
-                'query' => $departs,
+                'query' => $user,
                 'pagination' => [
                     'pageSize' => 20,
                 ],
             ]);
             return $this->render('choose_user', [
-                'model' => $model, 'dataProvider' => $dataProvider,
+                'model' => $model, 'dataProvider' => $dataProvider, 'position' => $position,
             ]);
         }
         return $this->redirect('index.php');
     }
 
-
-
-
+    public function actionChoose()
+    {
+        if (Yii::$app->user->identity && (Yii::$app->user->identity->privilege == 1)) {
+            if($model = \app\models\User::findOne(Yii::$app->request->post('usr_id'))) {
+                if ($model->position_id == 0) {
+                    $model->position_id = Yii::$app->request->post('pos_id');
+                    $model->save();
+                    return Yii::$app->request->post('dep_id');
+                }
+                }
+            return Yii::$app->request->post('dep_id');
+        }
+        return $this->redirect('index.php');
+    }
 
     protected function findModel($id)
     {
@@ -137,3 +167,6 @@ class DepartmentsController extends Controller
     }
 
 }
+
+//use yii\helpers\VarDumper;
+//VarDumper::dump($this, 10, true);

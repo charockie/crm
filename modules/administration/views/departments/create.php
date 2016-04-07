@@ -3,9 +3,9 @@
 use yii\helpers\Html;
 
 
-$this->title = 'Create department';
-$this->params['breadcrumbs'][] = ['label' => 'Admin panel', 'url' => ['/administration/menu']];
-$this->params['breadcrumbs'][] = ['label' => 'Departments', 'url' => ['index']];
+$this->title = 'Создание отдела';
+$this->params['breadcrumbs'][] = ['label' => 'Панель администратора', 'url' => ['/administration/menu']];
+$this->params['breadcrumbs'][] = ['label' => 'Отделы', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="country-create">

@@ -4,9 +4,11 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\GridView;
 
+$this->registerJsFile('/js/functions.js', ['depends' => 'yii\web\JqueryAsset']);
+
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Admin panel', 'url' => ['/administration/menu']];
-$this->params['breadcrumbs'][] = ['label' => 'Departments', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Панель администратора', 'url' => ['/administration/menu']];
+$this->params['breadcrumbs'][] = ['label' => 'Отделы', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="country-view">
@@ -14,16 +16,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
+        <?= Html::a('Редактировать', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::button('Удалить', ['data-id' => $model->id, 'class' => 'btn btn-danger', 'id' => 'delete-department']) ?>
     </p>
-
+<hr>
     <p>
         <?= Html::a('Добавить должность', ['add_position', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
     </p>
@@ -35,17 +31,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'pos_id',
+            'id',
             'title',
             'description',
             ['attribute' => 'name',
                 'content' => function ($data) {
                     return Html::a(Html::encode(isset($data->name)? $r=$data->name : $r = 'ПУСТО'),
-                        ($r=='ПУСТО')? Url::to(['choose_user', 'id' => $data->depart_id]) : Url::to(['viewUser', 'id' => $data->id]));
+                        ($r=='ПУСТО')? Url::to(['choose_user', 'dep_id' => $data->depart_id, 'pos_id' => $data->id]) : Url::to(['viewUser', 'id' => $data->id]));
                 }],
-//            'user_id',
-
-//            'format' => 'raw',
+            'user_id',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
