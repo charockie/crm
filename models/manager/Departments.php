@@ -33,4 +33,10 @@ class Departments extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getAllDepartments()
+    {
+        return $this->find();
+    }
+
+
 }

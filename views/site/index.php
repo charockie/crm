@@ -9,11 +9,11 @@ $this->title = 'My Yii Application';
 <div class="site-index">
 
     <div class="jumbotron">
-        <h1>Walcome to my projects!</h1>
+        <h1>Walcome to my CRM!</h1>
 
-        <p class="lead">Это пример моего кода и творчества</p>
+        <p class="lead">Раздел администрации</p>
 
-        <p><a class="btn btn-lg btn-default" href="http://www.yiiframework.com">Get started with Yii</a></p>
+        <p><?= Html::a('Перейти', ['/administration/menu'], ['class' => 'btn btn-success']) ?></a></p>
     </div>
 
     <div class="body-content">

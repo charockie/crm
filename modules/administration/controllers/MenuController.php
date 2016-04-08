@@ -5,10 +5,24 @@ namespace app\modules\administration\controllers;
 
 use Yii;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 
 
 class MenuController extends Controller
 {
+    public function beforeAction($action)
+    {
+        if (parent::beforeAction($action)) {
+            if (!\Yii::$app->user->can($action->id)) {
+                throw new ForbiddenHttpException('Доступ запрещен!');
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
 //    public function behaviors()
 //    {
 //        return [

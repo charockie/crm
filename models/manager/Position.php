@@ -40,4 +40,19 @@ class Position extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getAllPositionInDepart($id)
+    {
+        return Position::find()->leftJoin('user', 'user.position_id=position.id')->addSelect(["*", "user.name", "position.id id", "user.id user_id"])->where("position.depart_id=$id");
+    }
+
+    public function getIdsOfDep($id)
+    {
+        return Position::find()->select('id')->andWhere(['depart_id' => $id])->column();
+    }
+
+    public function getPositionFromId($id)
+    {
+        return $this->findOne($id);
+    }
+
 }

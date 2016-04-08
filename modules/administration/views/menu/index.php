@@ -23,13 +23,13 @@ $this->title = 'Administration';
     <div class="col-md-3 table-bordered">
         <h4>Admin panel</h4>
         <ol>
-            <li><a href="<?= Url::toRoute('departments/') ?>">Departments</a></li>
-            <li><a href="<?= Url::toRoute('') ?>">Фильмы</a></li>
+            <li><a href="<?= Url::toRoute('departments/') ?>">Отделы</a></li>
+            <li><a href="<?= Url::toRoute('users/') ?>">Пользователи</a></li>
         </ol>
     </div>
 
     <div class="col-md-6 table-bordered">
-        <h4>All departaments</h4>
+        <h4>Other</h4>
         <ol>
             <li><a href="<?= Url::toRoute('#') ?>">asdasdasdasd</a></li>
         </ol>

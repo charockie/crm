@@ -15,8 +15,19 @@ $('#delete-department').click(function(){
     }
 });
 
+$('#delete-user').click(function(){
+    if (confirm("Хотите удалить пользователя?")) {
+        $.post(
+            "index.php?r=administration/users/delete_user",
+            {
+                id: $(this).data('id')
+            },
+            window.location.href = "index.php?r=administration/users"
+        );
+    }
+});
 
-$('#choose-worker').click(function(){
+$('.choose-worker').click(function(){
     if (confirm("Хотите назначить этого работника?")) {
         $.post(
             "index.php?r=administration/departments/choose",

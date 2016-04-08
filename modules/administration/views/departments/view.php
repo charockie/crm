@@ -37,11 +37,11 @@ $this->params['breadcrumbs'][] = $this->title;
             ['attribute' => 'name',
                 'content' => function ($data) {
                     return Html::a(Html::encode(isset($data->name)? $r=$data->name : $r = 'ПУСТО'),
-                        ($r=='ПУСТО')? Url::to(['choose_user', 'dep_id' => $data->depart_id, 'pos_id' => $data->id]) : Url::to(['viewUser', 'id' => $data->id]));
+                        ($r=='ПУСТО')? Url::to(['choose_user', 'dep_id' => $data->depart_id, 'pos_id' => $data->id]) : Url::to(['users/view', 'id' => $data->user_id]));
                 }],
-            'user_id',
+//            'user_id',
 
-            ['class' => 'yii\grid\ActionColumn'],
+//            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 

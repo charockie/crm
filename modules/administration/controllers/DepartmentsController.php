@@ -9,15 +9,58 @@ use app\models\manager\User;
 use Yii;
 use yii\web\Controller;
 use yii\data\ActiveDataProvider;
+use yii\filters\VerbFilter;
+use yii\web\ForbiddenHttpException;
 
 class DepartmentsController extends Controller
 {
+
+//    public function beforeAction($action)
+//    {
+//        if (parent::beforeAction($action)) {
+//            if (!\Yii::$app->user->can($action->id)) {
+//                throw new ForbiddenHttpException('Доступ запрещен!');
+//            }
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
+
+//    public function behaviors()
+//    {
+//        return [
+//            'verbs' => [
+//                'class' => VerbFilter::className(),
+//                'actions' => [
+//                    'logout' => ['post'],
+//                ],
+//            ],
+//        ];
+//    }
+
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ],
+            'captcha' => [
+                'class' => 'yii\captcha\CaptchaAction',
+                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+            ],
+        ];
+    }
+
+
+
+
     public function actionIndex()
     {
         if (Yii::$app->user->identity && (Yii::$app->user->identity->privilege == 1)){
-            $departs = Departments::find();
+            $departs = new Departments();
             $dataProvider = new ActiveDataProvider([
-                'query' => $departs,
+                'query' => $departs->getAllDepartments(),
                 'pagination' => [
                     'pageSize' => 20,
                 ],
@@ -48,9 +91,10 @@ class DepartmentsController extends Controller
     {
         if (Yii::$app->user->identity && (Yii::$app->user->identity->privilege == 1)) {
             $model = $this->findModel($id)->findOne($id);
-            $departs = Position::find()->leftJoin('user', 'user.position_id=position.id')->addSelect(["*", "user.name", "position.id id", "user.id user_id"])->where("position.depart_id=$id");
+            $positions = new Position();
+            $data = $positions->getAllPositionInDepart($id);
             $dataProvider = new ActiveDataProvider([
-                'query' => $departs,
+                'query' => $data,
                 'pagination' => [
                     'pageSize' => 20,
                 ],
@@ -77,28 +121,18 @@ class DepartmentsController extends Controller
         return $this->redirect('index.php');
     }
 
-
     //jquery POST/ajax
     public function actionDelete_department()
     {
         if (Yii::$app->user->identity && (Yii::$app->user->identity->privilege == 1)) {
             if(Yii::$app->request->post('id') && Departments::findOne(Yii::$app->request->post('id'))->delete()){
-
-                $ids = Position::find()->select('id')->andWhere(['depart_id' => Yii::$app->request->post('id')])->column();
+                $position = new Position();
+                $ids = $position->getIdsOfDep(Yii::$app->request->post('id'));
                 Position::deleteAll(['id' => $ids]);
 
                 \app\models\User::updateAll(['position_id' => 0], ['position_id' => $ids]);
                 return true;
             }
-            return $this->redirect(['index']);
-        }
-        return $this->redirect('index.php');
-    }
-
-    public function actionDelete_dep($id)
-    {
-        if (Yii::$app->user->identity && (Yii::$app->user->identity->privilege == 1)) {
-            $this->findModel($id)->delete();
             return $this->redirect(['index']);
         }
         return $this->redirect('index.php');
@@ -123,11 +157,13 @@ class DepartmentsController extends Controller
     {
         if (Yii::$app->user->identity && (Yii::$app->user->identity->privilege == 1)) {
             $model = $this->findModel($dep_id)->findOne($dep_id);
-            $position = Position::findOne($pos_id);
-            $user = User::find()->where("position_id = '0'");
+            $position = new Position();
+            $position->getPositionFromId($pos_id);
+            $data = new User();
+            $data = $data->getNotWorkingUser();
 
             $dataProvider = new ActiveDataProvider([
-                'query' => $user,
+                'query' => $data,
                 'pagination' => [
                     'pageSize' => 20,
                 ],

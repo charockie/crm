@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Выбор сотрудника'];
                         'data-usr_id' => $data->id,
                         'data-dep_id' => $_GET['dep_id'],
                         'data-pos_id' => $_GET['pos_id'],
-                        'class' => 'btn btn-primary choose-worker']);
+                        'class' => 'btn btn-primary', 'id' => 'choose-worker']);
             }],
         ],
     ]); ?>
