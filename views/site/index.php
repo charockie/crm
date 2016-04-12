@@ -14,6 +14,10 @@ $this->title = 'My Yii Application';
         <p class="lead">Раздел администрации</p>
 
         <p><?= Html::a('Перейти', ['/administration/menu'], ['class' => 'btn btn-success']) ?></a></p>
+
+        <p class="lead">Приложение</p>
+
+        <p><?= Html::a('Перейти', ['/tickets/'], ['class' => 'btn btn-success']) ?></a></p>
     </div>
 
     <div class="body-content">
