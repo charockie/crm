@@ -12,30 +12,32 @@ use yii\web\ForbiddenHttpException;
 
 class UsersController extends Controller
 {
+    public function beforeAction($action)
+    {
+        if (Yii::$app->user->identity->group == 'admin') {
+            if (parent::beforeAction($action)) {
+                if (!\Yii::$app->user->can($action->id)) {
+                    throw new ForbiddenHttpException('Доступ запрещен!');
+                }
+                return true;
+            } else {
+                return false;
+            }
+        }
+        throw new ForbiddenHttpException('Доступ запрещен!');
+    }
 
-//    public function beforeAction($action)
-//    {
-//        if (parent::beforeAction($action)) {
-//            if (!\Yii::$app->user->can($action->id)) {
-//                throw new ForbiddenHttpException('Доступ запрещен!');
-//            }
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-//
-//    public function behaviors()
-//    {
-//        return [
-//            'verbs' => [
-//                'class' => VerbFilter::className(),
-//                'actions' => [
-//                    'logout' => ['post'],
-//                ],
-//            ],
-//        ];
-//    }
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'logout' => ['post'],
+                ],
+            ],
+        ];
+    }
 
     public function actions()
     {
@@ -51,78 +53,69 @@ class UsersController extends Controller
     }
 
 
-
     public function actionIndex()
     {
-        if (Yii::$app->user->identity && (Yii::$app->user->identity->privilege == 1)){
-            $users = new User;
-            $users = $users->getUsersWithPosition();
+        $users = new User;
+        $users = $users->getUsersWithPosition();
 
-            $dataProvider = new ActiveDataProvider([
-                'query' => $users,
-                'pagination' => [
-                    'pageSize' => 20,
-                ],
-            ]);
-            return $this->render('users', ['dataProvider' => $dataProvider]);
-        }
-        return $this->redirect('index.php');
+        $dataProvider = new ActiveDataProvider([
+            'query' => $users,
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+        ]);
+        return $this->render('users', ['dataProvider' => $dataProvider]);
     }
 
     public function actionCreate()
     {
-        if (Yii::$app->user->identity && (Yii::$app->user->identity->privilege == 1)) {
-            $model = new User();
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-                return $this->render('create', [
-                    'model' => $model,
-                ]);
-            }
+        $model = new User();
+        var_dump(Yii::$app->request->post());
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+            ]);
         }
-        return $this->redirect('index.php');
     }
 
     public function actionView($id)
     {
-        if (Yii::$app->user->identity && (Yii::$app->user->identity->privilege == 1)) {
-            $model = new User();
-            $model = $model->getUserById($id);
-            return $this->render('view', ['model' => $model]);
-        }
-        return $this->redirect('index.php');
+        $model = new User();
+        $model = $model->getUserById($id);
+        return $this->render('view', ['model' => $model]);
     }
 
     public function actionUpdate($id)
     {
-        if (Yii::$app->user->identity && (Yii::$app->user->identity->privilege == 1)){
-            $model = new User();
-            $model = $model->getUserById($id);
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-                return $this->render('update', [
-                    'model' => $model,
-                ]);
-            }
+        $model = new User();
+        $model = $model->getUserById($id);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
         }
-        return $this->redirect('index.php');
     }
 
- //jquery POST/ajax
+    //jquery POST/ajax
     public function actionDelete_user()
     {
-        if (Yii::$app->user->identity && (Yii::$app->user->identity->privilege == 1)) {
-            if(Yii::$app->request->post('id') && User::findOne(Yii::$app->request->post('id'))->delete()){
-                return true;
-            }
-            return $this->redirect(['index']);
+        if (Yii::$app->request->post('id') && User::findOne(Yii::$app->request->post('id'))->delete()) {
+            return true;
         }
-        return $this->redirect('index.php');
+        return $this->redirect(['index']);
+    }
+
+    //jquery POST/ajax
+    public function actionFree_user()
+    {
+        if (Yii::$app->request->post('id') && \app\models\User::updateAll(['position_id' => 0], ['id' => Yii::$app->request->post('id')])) {
+            return true;
+        }
+        return $this->redirect(['index']);
     }
 
 }
-
-//use yii\helpers\VarDumper;
-//VarDumper::dump($this, 10, true);

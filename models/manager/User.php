@@ -35,9 +35,8 @@ class User extends ActiveRecord
             [['surname'], 'string', 'min' => 2],
             [['password'], 'string', 'min' => 5],
             [['phone'], 'string', 'length' => 10],
-//            [['hit'], 'in', 'range' => [10],
             [['phone'], 'string', 'length' => 10],
-            [['group'], 'integer', 'max' => 2],
+            [['group'], 'string',],
         ];
     }
 

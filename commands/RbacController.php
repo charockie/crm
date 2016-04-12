@@ -4,7 +4,6 @@ namespace app\commands;
 use Yii;
 use yii\console\Controller;
 use \app\rbac\UserGroupRule;
-use \app\rbac\UserProfileOwnerRule;
 
 class RbacController extends Controller
 {
@@ -76,18 +75,5 @@ class RbacController extends Controller
         $authManager->addChild($admin, $delete);
         $authManager->addChild($admin, $talent);
         $authManager->addChild($admin, $brand);
-
-
-
-        // add the rule
-        $userProfileOwnerRule = new UserProfileOwnerRule();
-        $authManager->add($userProfileOwnerRule);
-
-        $updateOwnProfile = $authManager->createPermission('updateOwnProfile');
-        $updateOwnProfile->ruleName = $userProfileOwnerRule->name;
-        $authManager->add($updateOwnProfile);
-
-        $authManager->addChild($brand, $updateOwnProfile);
-        $authManager->addChild($talent, $updateOwnProfile);
     }
 }

@@ -40,8 +40,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         ($r=='ПУСТО')? Url::to(['choose_user', 'dep_id' => $data->depart_id, 'pos_id' => $data->id]) : Url::to(['users/view', 'id' => $data->user_id]));
                 }],
 //            'user_id',
-
-//            ['class' => 'yii\grid\ActionColumn'],
+            ['attribute' => '',
+                'content' => function ($data) {
+                    return Html::button('', ['data-id' => $data->id, 'class' => 'glyphicon glyphicon-trash delete-position']);
+                }],
         ],
     ]); ?>
 

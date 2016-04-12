@@ -7,6 +7,9 @@ use Yii;
 
 class User extends ActiveRecord implements \yii\web\IdentityInterface
 {
+    const ROLE_USER = 1;
+    const ROLE_MODER = 5;
+    const ROLE_ADMIN = 10;
 
     public static function tableName()
     {

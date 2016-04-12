@@ -6,20 +6,24 @@ namespace app\modules\administration\controllers;
 use Yii;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
+use yii\filters\AccessControl;
 
 
 class MenuController extends Controller
 {
     public function beforeAction($action)
     {
-        if (parent::beforeAction($action)) {
-            if (!\Yii::$app->user->can($action->id)) {
-                throw new ForbiddenHttpException('Доступ запрещен!');
+        if (Yii::$app->user->identity->group == 'admin') {
+            if (parent::beforeAction($action)) {
+                if (!\Yii::$app->user->can($action->id)) {
+                    throw new ForbiddenHttpException('Доступ запрещен!');
+                }
+                return true;
+            } else {
+                return false;
             }
-            return true;
-        } else {
-            return false;
         }
+        throw new ForbiddenHttpException('Доступ запрещен!');
     }
 
 
@@ -28,21 +32,21 @@ class MenuController extends Controller
 //        return [
 //            'access' => [
 //                'class' => AccessControl::className(),
-//                'only' => ['logout'],
+//                'only' => ['index'],
 //                'rules' => [
 //                    [
-//                        'actions' => ['logout'],
+//                        'actions' => ['index'],
 //                        'allow' => true,
-//                        'roles' => ['@'],
+//                        'roles' => ['admin'],
 //                    ],
 //                ],
 //            ],
-//            'verbs' => [
-//                'class' => VerbFilter::className(),
-//                'actions' => [
-//                    'logout' => ['post'],
-//                ],
-//            ],
+////            'verbs' => [
+////                'class' => VerbFilter::className(),
+////                'actions' => [
+////                    'logout' => ['post'],
+////                ],
+////            ],
 //        ];
 //    }
 //    public function actions()
@@ -59,14 +63,11 @@ class MenuController extends Controller
 //    }
     public function actionIndex()
     {
-        if (Yii::$app->user->identity && (Yii::$app->user->identity->privilege == 1)){
             $user = Yii::$app->user->identity;
 
             return $this->render('index', [
                 'user' => $user,
             ]);
-        }
-        return $this->redirect('index.php');
     }
 
 

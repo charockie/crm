@@ -10,7 +10,23 @@ $('#delete-department').click(function(){
             {
                 id: $(this).data('id')
             },
-            window.location.href = "index.php?r=administration/departments"
+            function () {
+                window.location.href = "index.php?r=administration/departments"
+            }
+        );
+    }
+});
+
+$('.delete-position').click(function(){
+    if (confirm("Хотите удалить должность?")) {
+        $.post(
+            "index.php?r=administration/departments/delete_position",
+            {
+                id: $(this).data('id')
+            },
+            function () {
+                location.reload()
+            }
         );
     }
 });
@@ -22,7 +38,23 @@ $('#delete-user').click(function(){
             {
                 id: $(this).data('id')
             },
-            window.location.href = "index.php?r=administration/users"
+            function () {
+                window.location.href = "index.php?r=administration/users"
+            }
+        );
+    }
+});
+
+$('#free-user').click(function(){
+    if (confirm("Хотите освободить пользователя?")) {
+        $.post(
+            "index.php?r=administration/users/free_user",
+            {
+                id: $(this).data('id')
+            },
+            function () {
+                location.reload()
+            }
         );
     }
 });
@@ -36,7 +68,9 @@ $('.choose-worker').click(function(){
                 dep_id: $(this).data('dep_id'),
                 pos_id: $(this).data('pos_id')
             },
-            window.location.href = "javascript:history.back()"
+            function () {
+                window.location.href = "javascript:history.back()"
+            }
         );
     }
 });
