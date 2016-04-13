@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\GridView;
 
+
 /* @var $this yii\web\View */
 
 $this->title = 'Заявки';
@@ -35,9 +36,10 @@ $this->params['breadcrumbs'][] = $this->title;
 //                'user_id',
                 'department_title',
                 'user_to',
+                'status',
 //                ['attribute' => '',
 //                    'content' => function ($data) {
-//                        return Html::button('', ['data-id' => $data->id, 'class' => 'glyphicon glyphicon-trash delete-position']);
+//                        return Html::button('', ['data-id' => $data->id, 'class' => 'glyphicon glyphicon-trash delete-ticket']);
 //                    }],
             ],
         ]); ?>

@@ -2,15 +2,12 @@
 
 namespace app\controllers;
 
-use app\models\EntryForm;
-use app\models\HelloForm;
-use app\models\manager\User;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
-use app\models\ContactForm;
+
 
 class SiteController extends Controller
 {
@@ -55,14 +52,6 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
-
-
-
-
-
-
-
-
     public function actionLogin()
     {
 
@@ -79,9 +68,6 @@ class SiteController extends Controller
         ]);
     }
 
-
-
-
     public function actionLogout()
     {
         Yii::$app->user->logout();
@@ -89,59 +75,5 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
 
-            return $this->refresh();
-        }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
-    }
-
-    public function actionAbout()
-    {
-        return $this->render('about');
-    }
-
-
-
-
-    public function actionSay($message = 'Привет')
-    {
-        $model = New HelloForm();
-        $users = User::find()->all();
-
-        if($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $validate = $model->validate();
-            $data = Yii::$app->request->post();
-            $user = New User();
-            $user->name = $data['HelloForm']['name'];
-            $user->password = $data['HelloForm']['password'];
-            $user->auth_key = $data['HelloForm']['auth_key'];
-            $user->access_token = $data['HelloForm']['access_token'];
-            $user->save();
-
-            return $this->render('say', ['model' => $model, 'message' => $message, 'users' => $users]);
-        } else {
-            return $this->render('say', ['model' => $model, 'message' => $message, 'users' => $users]);
-        }
-
-    }
-
-    public function actionEntry()
-    {
-        $model = New EntryForm();
-
-        if($model->load(Yii::$app->request->post()) && $model->validate()) {
-
-            return $this->render('entry-confirm', ['model' => $model]);
-        } else {
-            return $this->render('entry', ['model' => $model]);
-        }
-
-    }
 }

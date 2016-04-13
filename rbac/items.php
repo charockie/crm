@@ -45,6 +45,18 @@ return [
     'delete_user' => [
         'type' => 2,
     ],
+    'delete_ticket' => [
+        'type' => 2,
+    ],
+    'view_ticket' => [
+        'type' => 2,
+    ],
+    'start' => [
+        'type' => 2,
+    ],
+    'finish' => [
+        'type' => 2,
+    ],
 
 
     'guest' => [
@@ -59,19 +71,26 @@ return [
             'view',
         ],
     ],
-    'BRAND' => [
+    'user' => [
         'type' => 1,
         'ruleName' => 'userGroup',
         'children' => [
-            'update',
             'guest',
+            'view_ticket',
+            'start',
+            'finish',
         ],
     ],
-    'TALENT' => [
+    'moderator' => [
         'type' => 1,
         'ruleName' => 'userGroup',
         'children' => [
+            'view_ticket',
+            'start',
+            'finish',
             'update',
+
+            'user',
             'guest',
         ],
     ],
@@ -81,14 +100,15 @@ return [
             'create',
             'choose',
             'delete_department',
+            'delete_ticket',
             'choose_user',
             'add_position',
             'free_user',
             'delete_position',
             'delete_user',
 
-            'TALENT',
-            'BRAND',
+            'moderator',
+            'user',
         ],
     ],
 ];

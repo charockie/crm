@@ -45,6 +45,20 @@ $('#delete-user').click(function(){
     }
 });
 
+$('#delete-ticket').click(function(){
+    if (confirm("Хотите удалить тикет?")) {
+        $.post(
+            "index.php?r=tickets/delete_ticket",
+            {
+                id: $(this).data('id')
+            },
+            function () {
+                window.location.href = "index.php?r=tickets"
+            }
+        );
+    }
+});
+
 $('#free-user').click(function(){
     if (confirm("Хотите освободить пользователя?")) {
         $.post(

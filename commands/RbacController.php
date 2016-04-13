@@ -13,8 +13,8 @@ class RbacController extends Controller
 
         // Create roles
         $guest  = $authManager->createRole('guest');
-        $brand  = $authManager->createRole('BRAND');
-        $talent = $authManager->createRole('TALENT');
+        $user  = $authManager->createRole('user');
+        $moderator = $authManager->createRole('moderator');
         $admin  = $authManager->createRole('admin');
 
         // Create simple, based on action{$NAME} permissions
@@ -44,14 +44,14 @@ class RbacController extends Controller
 
         // Add rule "UserGroupRule" in roles
         $guest->ruleName  = $userGroupRule->name;
-        $brand->ruleName  = $userGroupRule->name;
-        $talent->ruleName = $userGroupRule->name;
+        $user->ruleName  = $userGroupRule->name;
+        $moderator->ruleName = $userGroupRule->name;
         $admin->ruleName  = $userGroupRule->name;
 
         // Add roles in Yii::$app->authManager
         $authManager->add($guest);
-        $authManager->add($brand);
-        $authManager->add($talent);
+        $authManager->add($user);
+        $authManager->add($moderator);
         $authManager->add($admin);
 
         // Add permission-per-role in Yii::$app->authManager
@@ -63,17 +63,17 @@ class RbacController extends Controller
         $authManager->addChild($guest, $index);
         $authManager->addChild($guest, $view);
 
-        // BRAND
-        $authManager->addChild($brand, $update);
-        $authManager->addChild($brand, $guest);
+        // user
+        $authManager->addChild($user, $update);
+        $authManager->addChild($user, $guest);
 
-        // TALENT
-        $authManager->addChild($talent, $update);
-        $authManager->addChild($talent, $guest);
+        // moderator
+        $authManager->addChild($moderator, $update);
+        $authManager->addChild($moderator, $guest);
 
         // Admin
         $authManager->addChild($admin, $delete);
-        $authManager->addChild($admin, $talent);
-        $authManager->addChild($admin, $brand);
+        $authManager->addChild($admin, $moderator);
+        $authManager->addChild($admin, $user);
     }
 }

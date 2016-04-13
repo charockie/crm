@@ -50,6 +50,8 @@ class Ticket extends ActiveRecord
             'department_title' => 'Занимающийся отдел',
             'user_to' => 'Занимающийся пользователь',
             'author_title' => 'Автор тикета',
+            'date' => 'Дата создания',
+            'status' => 'Статус',
         ];
     }
 
@@ -81,5 +83,14 @@ class Ticket extends ActiveRecord
             ->addSelect(["ticket.*", "user.name author_name", 'departments.title department_title', 'u_to.name user_to'])
             ->where("ticket.id=$id")->one();
     }
+
+    public function getTicketsForUser($id)
+    {
+        return Ticket::find()
+            ->leftJoin('user', 'ticket.author=user.id')
+            ->addSelect(["ticket.*", "user.name author_name"])
+            ->where("user_id=$id");
+    }
+
 
 }

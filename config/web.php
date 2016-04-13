@@ -5,6 +5,7 @@ $params = require(__DIR__ . '/params.php');
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
+    'timeZone' => 'Europe/Kiev',
     'bootstrap' => ['log'],
     'components' => [
         'request' => [
@@ -40,7 +41,7 @@ $config = [
         'db' => require(__DIR__ . '/db.php'),
         'authManager' => [
             'class' => 'yii\rbac\PhpManager',
-            'defaultRoles' => ['admin', 'BRAND', 'TALENT'],
+            'defaultRoles' => ['admin', 'user', 'moderator'],
         ],
 //        'authManager' => [
 //            'class' => 'yii\rbac\PhpManager',

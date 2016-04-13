@@ -5,7 +5,7 @@ use yii\helpers\Html;
 $this->registerJsFile('/js/functions.js', ['depends' => 'yii\web\JqueryAsset']);
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Заявки', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Личный кабинет', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="country-view">
@@ -13,8 +13,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Редактировать', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::button('Удалить', ['data-id' => $model->id, 'class' => 'btn btn-danger', 'id' => 'delete-ticket']) ?>
+        <?= Html::a('Приступить к выполнению', ['start', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Выполнено', ['finish', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
     </p>
 <hr>
 

@@ -8,13 +8,26 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
-use app\models\LoginForm;
 use yii\data\ActiveDataProvider;
-use app\models\manager\Departments;
+use yii\web\ForbiddenHttpException;
 
 
 class TicketsController extends Controller
 {
+    public function beforeAction($action)
+    {
+        if (Yii::$app->user->identity->group == 'moderator' || Yii::$app->user->identity->group == 'admin') {
+            if (parent::beforeAction($action)) {
+                if (!\Yii::$app->user->can($action->id)) {
+                    throw new ForbiddenHttpException('Доступ запрещен!');
+                }
+                return true;
+            } else {
+                return false;
+            }
+        }
+        throw new ForbiddenHttpException('Доступ запрещен!');
+    }
 
 
     public function actionIndex()
@@ -48,7 +61,6 @@ class TicketsController extends Controller
 
     public function actionUpdate($id)
     {
-
         $model = Ticket::findOne($id);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -56,8 +68,15 @@ class TicketsController extends Controller
             return $this->render('update', [
                 'model' => $model,
             ]);
-
         }
+    }
+
+    public function actionDelete_ticket()
+    {
+        if(Yii::$app->request->post('id') && Ticket::findOne(Yii::$app->request->post('id'))->delete()){
+            return true;
+        }
+        return $this->redirect(['index']);
     }
 
 

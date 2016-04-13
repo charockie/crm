@@ -14,10 +14,10 @@ class UserGroupRule extends Rule
             $group = \Yii::$app->user->identity->group;
             if ($item->name === 'admin') {
                 return $group == 'admin';
-            } elseif ($item->name === 'BRAND') {
-                return $group == 'admin' || $group == 'BRAND';
-            } elseif ($item->name === 'TALENT') {
-                return $group == 'admin' || $group == 'TALENT';
+            } elseif ($item->name === 'user') {
+                return $group == 'admin' || $group == 'user';
+            } elseif ($item->name === 'moderator') {
+                return $group == 'admin' || $group == 'moderator';
             }
         }
         return true;

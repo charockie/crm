@@ -17,7 +17,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'phone')->textInput(['length' => true, 'type' => 'tel']) ?>
 
-    <?= $form->field($model, 'group')->dropDownList(['guest' => 'guest', 'admin' => 'admin', 'TALENT' => 'TALENT', 'BRAND' => 'BRAND']) ?>
+    <?= $form->field($model, 'group')->dropDownList(['guest' => 'guest', 'admin' => 'admin', 'moderator' => 'moderator', 'user' => 'user']) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
